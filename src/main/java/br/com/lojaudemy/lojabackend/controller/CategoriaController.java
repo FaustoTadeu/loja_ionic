@@ -25,4 +25,10 @@ public class CategoriaController {
         return ResponseEntity.ok().body(obj);
     }
     
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> findAll() {
+        List<Categoria> obj = categoriaService.buscarTodasCategorias();
+        return ResponseEntity.ok().body(obj);
+    }
+    
 }
