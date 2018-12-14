@@ -12,5 +12,6 @@ public class LoginController {
 	
 	@Autowired
     private UsuarioService loginService;
+	
 
 }
