@@ -1,6 +1,9 @@
 package br.com.lojaudemy.lojabackend.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -15,6 +18,7 @@ public class Cidade implements Serializable {
 
     private String nomeCidade;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "estado_id")
     private Estado estado;

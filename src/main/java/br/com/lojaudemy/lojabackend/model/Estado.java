@@ -1,6 +1,9 @@
 package br.com.lojaudemy.lojabackend.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ public class Estado implements Serializable {
 
     private String siglaEstado;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
 
