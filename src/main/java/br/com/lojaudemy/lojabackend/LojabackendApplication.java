@@ -40,6 +40,9 @@ public class LojabackendApplication implements CommandLineRunner {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
 
 
     public static void main(String[] args) {
@@ -111,6 +114,19 @@ public class LojabackendApplication implements CommandLineRunner {
 //
 //        pedidoRepository.saveAll(Arrays.asList(pd1, pd2));
 //        pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+//
+//        ItemPedido ip1 = new ItemPedido(pd1, p1, 0.00, 1, 220.30);
+//        ItemPedido ip2 = new ItemPedido(pd1, p3,  0.00, 1, 22.30);
+//        ItemPedido ip3 = new ItemPedido(pd2, p2, 20.70, 1, 300.00);
+//
+//        pd1.getItens().addAll(Arrays.asList(ip1, ip2));
+//        pd2.getItens().addAll(Arrays.asList(ip3));
+//
+//        p1.getItens().addAll(Arrays.asList(ip1));
+//        p2.getItens().addAll(Arrays.asList(ip3));
+//        p3.getItens().addAll(Arrays.asList(ip2));
+//
+//        itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
     }
 }
