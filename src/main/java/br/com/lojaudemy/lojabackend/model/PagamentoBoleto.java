@@ -5,10 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import br.com.lojaudeny.lojabackend.enums.EstadoPagamento;
+import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
 
 @Entity(name = "pagamento_boleto")
-public class PagamentoBoleto extends Pagamento implements Serializable {
+public class PagamentoBoleto extends Pagamento {
 
     private static final long serialVersionUID = 1L;
 

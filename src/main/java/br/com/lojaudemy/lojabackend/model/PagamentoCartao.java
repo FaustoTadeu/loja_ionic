@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 
-import br.com.lojaudeny.lojabackend.enums.EstadoPagamento;
+import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
 
 
 @Entity(name = "pagamento_cartao")
-public class PagamentoCartao extends Pagamento implements Serializable{
+public class PagamentoCartao extends Pagamento {
 	
 	private static final long serialVersionUID = 1L;
 	

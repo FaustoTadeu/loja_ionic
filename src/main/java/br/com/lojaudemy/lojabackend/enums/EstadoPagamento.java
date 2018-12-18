@@ -1,4 +1,4 @@
-package br.com.lojaudeny.lojabackend.enums;
+package br.com.lojaudemy.lojabackend.enums;
 
 public enum EstadoPagamento {
 	

@@ -6,17 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import br.com.lojaudeny.lojabackend.enums.TipoCliente;
+import br.com.lojaudemy.lojabackend.enums.TipoCliente;
 
 @Entity(name = "cliente")
 public class Cliente implements Serializable {
@@ -42,7 +36,8 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-	
+
+	@OneToMany( mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {
@@ -113,6 +108,10 @@ public class Cliente implements Serializable {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}
+
+	public List<Pedido> getPedidos() { return pedidos; }
+
+	public void setPedidos(List<Pedido> pedidos) { this.pedidos = pedidos; }
 
 	@Override
 	public int hashCode() {

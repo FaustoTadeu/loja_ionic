@@ -1,12 +1,11 @@
 package br.com.lojaudemy.lojabackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity(name = "pedido")
@@ -17,24 +16,29 @@ public class Pedido implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPedido;
-	
+
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date dataPedido;
-	
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
-	
+
+	@ManyToOne
+	@JoinColumn( name = "endereco_entrega_id")
 	private Endereco enderecoEntrega;
 
 	public Pedido() {
 		super();
 	}
 
-	public Pedido(Integer idPedido, Date dataPedido, Pagamento pagamento, Cliente cliente, Endereco enderecoEntrega) {
+	public Pedido(Integer idPedido, Date dataPedido, Cliente cliente, Endereco enderecoEntrega) {
 		super();
 		this.idPedido = idPedido;
 		this.dataPedido = dataPedido;
-		this.pagamento = pagamento;
 		this.cliente = cliente;
 		this.enderecoEntrega = enderecoEntrega;
 	}

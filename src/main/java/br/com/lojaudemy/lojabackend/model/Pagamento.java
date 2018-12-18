@@ -2,24 +2,26 @@ package br.com.lojaudemy.lojabackend.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import br.com.lojaudeny.lojabackend.enums.EstadoPagamento;
+import javax.persistence.*;
+
+import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "pagamento")
-public class Pagamento implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pagamento implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private static final long serialVersionUID = 1L;
-    
 	private Integer idPagamento;
 	
 	private Integer estadoPagamento;
-	
 
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name = "pedido_id")
+	@MapsId
 	private Pedido pedido;
 
 	public Pagamento() {
