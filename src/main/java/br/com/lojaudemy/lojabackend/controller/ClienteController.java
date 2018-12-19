@@ -2,6 +2,7 @@ package br.com.lojaudemy.lojabackend.controller;
 
 import java.util.List;
 
+import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,14 +23,14 @@ public class ClienteController {
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> findById(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
         Cliente obj = clienteService.buscarporId(id);
         return ResponseEntity.ok().body(obj);
     }
     
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<Cliente>> findAll() {
         List<Cliente> obj = clienteService.buscarTodosClientes();
         return ResponseEntity.ok().body(obj);
     }

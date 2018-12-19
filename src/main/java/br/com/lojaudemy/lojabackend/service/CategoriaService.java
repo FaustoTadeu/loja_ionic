@@ -2,6 +2,7 @@ package br.com.lojaudemy.lojabackend.service;
 
 import br.com.lojaudemy.lojabackend.model.Categoria;
 import br.com.lojaudemy.lojabackend.repository.CategoriaRepository;
+import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,10 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Categoria buscarporId(Integer id) {
-        Optional<Categoria> obj = categoriaRepository.findById(id);
+    public Categoria buscarCategoriaPorId(Integer idCat) {
+        Optional<Categoria> obj = categoriaRepository.findById(idCat);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! id: " + id + ", Tipo: " + Categoria.class.getName()
+                "Objeto não encontrado! id: " + idCat + ", Tipo: " + Categoria.class.getName()
         ));
     }
     
@@ -30,6 +31,22 @@ public class CategoriaService {
 			new ObjectNotFoundException("Objetos do tipo " + Categoria.class.getName() + " não encontrados");
 		}
         return obj;
+    }
+
+    public Categoria inserirEditarCategoria(Categoria cat) {
+       if (cat.getIdCategoria() != null) {
+          buscarCategoriaPorId(cat.getIdCategoria());
+       }
+       return categoriaRepository.save(cat);
+    }
+
+    public void apagarCategoria(Integer idCat) {
+       Categoria cat =  buscarCategoriaPorId(idCat);
+        try{
+            categoriaRepository.delete(cat);
+        } catch (Exception e) {
+            throw new ConstraintViolationException ("Não é possivel excluir categorias que possuem produtos cadastrados");
+        }
     }
     
 }

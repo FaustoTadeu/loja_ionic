@@ -1,19 +1,19 @@
 package br.com.lojaudemy.lojabackend.model;
 
-import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Entity;
-
 import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity(name = "pagamento_boleto")
 public class PagamentoBoleto extends Pagamento {
 
     private static final long serialVersionUID = 1L;
 
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date dataVencimento;
 
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date dataPagamento;
 	
 	public PagamentoBoleto() {

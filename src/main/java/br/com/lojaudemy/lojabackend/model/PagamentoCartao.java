@@ -1,9 +1,6 @@
 package br.com.lojaudemy.lojabackend.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-
 import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
 
 

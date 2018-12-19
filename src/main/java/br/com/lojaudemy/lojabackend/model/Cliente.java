@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.com.lojaudemy.lojabackend.enums.TipoCliente;
 
 @Entity(name = "cliente")
@@ -28,8 +25,7 @@ public class Cliente implements Serializable {
 	private String cpfCnpjCliente;
 	
 	private Integer tipoCliente;
-	
-	@JsonManagedReference
+
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> endereco = new ArrayList<>();
 	
@@ -37,6 +33,7 @@ public class Cliente implements Serializable {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
+	@JsonIgnore
 	@OneToMany( mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
