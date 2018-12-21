@@ -8,10 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +21,9 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @CrossOrigin(origins = "http://localhost:8100")
-    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Categoria> findCategoriaById(@PathVariable Integer id) {
-        Categoria obj = categoriaService.buscarCategoriaPorId(id);
+    @RequestMapping(value ="/{idCategoria}", method = RequestMethod.GET)
+    public ResponseEntity<Categoria> findCategoriaById(@PathVariable Integer idCategoria) {
+        Categoria obj = categoriaService.buscarCategoriaPorId(idCategoria);
         return ResponseEntity.ok().body(obj);
     }
     
@@ -33,24 +31,24 @@ public class CategoriaController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<CategoriaDTO>> findAllCategorias() {
         List<Categoria> listCategorias = categoriaService.buscarTodasCategorias();
-        List <CategoriaDTO> listategoriasDto = listCategorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listategoriasDto);
+        List <CategoriaDTO> listCategoriasDto = listCategorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listCategoriasDto);
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> InserirCategoria(@Valid @RequestBody CategoriaDTO catDto) {
-        Categoria cat = categoriaService.fromDTO(catDto);
+    public ResponseEntity<Void> InsertCategoria(@Valid @RequestBody CategoriaDTO catDto) {
+        Categoria cat = categoriaService.fromDTO(catDto, null);
         cat = categoriaService.inserirEditarCategoria(cat);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(cat.getIdCategoria()).toUri();
+                .path("/{idCategoria}").buildAndExpand(cat.getIdCategoria()).toUri();
          return ResponseEntity.created(uri).build();
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
-    @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> Editar(@Valid @RequestBody Categoria cat, @PathVariable Integer id) {
-        cat.setIdCategoria(id);
+    @RequestMapping(value ="/{idCategoria}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> EditCategoria(@Valid @RequestBody CategoriaDTO catDto, @PathVariable Integer idCategoria) {
+    	Categoria cat = categoriaService.fromDTO(catDto, idCategoria);
         categoriaService.inserirEditarCategoria(cat);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand().toUri();
@@ -71,10 +69,9 @@ public class CategoriaController {
         @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
         @RequestParam(value = "orderBy", defaultValue = "nomeCategoria") String orderBy,
         @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-            Page<Categoria> listCategorias = categoriaService.findAllPage(page, linesPerPage, orderBy, direction);
-            Page<CategoriaDTO> listategoriasDto = listCategorias.map(obj -> new CategoriaDTO(obj));
-            return ResponseEntity.ok().body(listategoriasDto);
+            Page<Categoria> listCategorias = categoriaService.buscarTodasCategoriasPage(page, linesPerPage, orderBy, direction);
+            Page<CategoriaDTO> listCategoriasDto = listCategorias.map(obj -> new CategoriaDTO(obj));
+            return ResponseEntity.ok().body(listCategoriasDto);
     }
-
-
+    
 }

@@ -1,79 +1,83 @@
 package br.com.lojaudemy.lojabackend.controller;
 
+import java.net.URI;
 import java.util.List;
-
-import ch.qos.logback.core.net.server.Client;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import br.com.lojaudemy.lojabackend.dto.ClienteDTO;
 import br.com.lojaudemy.lojabackend.model.Cliente;
 import br.com.lojaudemy.lojabackend.service.ClienteService;
 
 @RestController
-@RequestMapping(value = "/cliente")
+@RequestMapping(value = "/clientes")
 public class ClienteController {
 
     @Autowired
-    private ClienteService categoriaService;
+    private ClienteService clienteService;
 
     @CrossOrigin(origins = "http://localhost:8100")
-    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Cliente> findCategoriaById(@PathVariable Integer id) {
-        Cliente obj = categoriaService.buscarCPorId(id);
+    @RequestMapping(value ="/{idCliente}", method = RequestMethod.GET)
+    public ResponseEntity<Cliente> findClienteById(@PathVariable Integer idCliente) {
+        Cliente obj = clienteService.buscarClientePorId(idCliente);
         return ResponseEntity.ok().body(obj);
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<CategoriaDTO>> findAllCategorias() {
-        List<Categoria> listCategorias = categoriaService.buscarTodasCategorias();
-        List <CategoriaDTO> listategoriasDto = listCategorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listategoriasDto);
+    public ResponseEntity<List<ClienteDTO>> findAllClientes() {
+        List<Cliente> listClientes = clienteService.buscarTodosClientes();
+        List <ClienteDTO> listClientesDto = listClientes.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listClientesDto);
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> InserirCategoria(@Valid @RequestBody CategoriaDTO catDto) {
-        Categoria cat = categoriaService.fromDTO(catDto);
-        cat = categoriaService.inserirEditarCategoria(cat);
+    public ResponseEntity<Void> InsertCliente(@Valid @RequestBody ClienteDTO cliDto) {
+        Cliente cli = clienteService.fromDTO(cliDto, null);
+        cli = clienteService.inserirEditarCliente(cli);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(cat.getIdCategoria()).toUri();
+                .path("/{idCliente}").buildAndExpand(cli.getIdCliente()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
-    @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> Editar(@Valid @RequestBody Categoria cat, @PathVariable Integer id) {
-        cat.setIdCategoria(id);
-        categoriaService.inserirEditarCategoria(cat);
+    @RequestMapping(value ="/{idCliente}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> EditCliente(@Valid @RequestBody ClienteDTO cliDto, @PathVariable Integer idCliente) {
+    	Cliente cli = clienteService.fromDTO(cliDto, idCliente);
+        clienteService.inserirEditarCliente(cli);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand().toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
-    @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Categoria> deleteCategoriaById(@PathVariable Integer id) {
-        categoriaService.apagarCategoria(id);
+    @RequestMapping(value ="/{idCliente}", method = RequestMethod.DELETE)
+    public ResponseEntity<Cliente> deleteClienteById(@PathVariable Integer idCliente) {
+        clienteService.apagarCliente(idCliente);
         return ResponseEntity.noContent().build();
     }
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public ResponseEntity<Page<CategoriaDTO>> findAllCategoriasPage(
+    public ResponseEntity<Page<ClienteDTO>> findAllClientesPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
-            @RequestParam(value = "orderBy", defaultValue = "nomeCategoria") String orderBy,
+            @RequestParam(value = "orderBy", defaultValue = "nomeCliente") String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        Page<Categoria> listCategorias = categoriaService.findAllPage(page, linesPerPage, orderBy, direction);
-        Page<CategoriaDTO> listategoriasDto = listCategorias.map(obj -> new CategoriaDTO(obj));
-        return ResponseEntity.ok().body(listategoriasDto);
+        Page<Cliente> listClientes = clienteService.buscarTodosClientesPage(page, linesPerPage, orderBy, direction);
+        Page<ClienteDTO> listClientesDto = listClientes.map(obj -> new ClienteDTO(obj));
+        return ResponseEntity.ok().body(listClientesDto);
     }
-
 
 }

@@ -3,17 +3,16 @@ package br.com.lojaudemy.lojabackend.service;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.lojaudemy.lojabackend.dto.ClienteDTO;
-import br.com.lojaudemy.lojabackend.model.Categoria;
-import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import br.com.lojaudemy.lojabackend.dto.ClienteDTO;
 import br.com.lojaudemy.lojabackend.model.Cliente;
 import br.com.lojaudemy.lojabackend.repository.ClienteRepository;
+import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 
 @Service
@@ -39,11 +38,14 @@ public class ClienteService {
         return obj;
     }
 
-    public Cliente inserirEditarClientes(Cliente cli) {
+    public Cliente inserirEditarCliente(Cliente cli) {
         if (cli.getIdCliente() != null) {
-            buscarClientePorId(cli.getIdCliente());
+            Cliente newCli = buscarClientePorId(cli.getIdCliente());
+            updateData(newCli, cli);
+            return clienteRepository.save(newCli);
+        } else {
+            return clienteRepository.save(cli);
         }
-        return clienteRepository.save(cli);
     }
 
     public void apagarCliente(Integer idCli) {
@@ -55,12 +57,18 @@ public class ClienteService {
         }
     }
 
-    public Page<Cliente> findAllPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    @SuppressWarnings("deprecation")
+	public Page<Cliente> buscarTodosClientesPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return clienteRepository.findAll(pageRequest);
     }
 
-   // public Cliente fromDTO (ClienteDTO cliDto) {
-    //    return new Cliente(cliDto.getIdCliente(), cliDto.getNomeCliente());
-   // }
+    public Cliente fromDTO (ClienteDTO cliDto, Integer idCliente) {
+    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null);
+    }
+    
+    private void updateData(Cliente newCli, Cliente cli) {
+    	newCli.setNomeCliente(cli.getNomeCliente());
+    	newCli.setEmailCliente(cli.getEmailCliente());
+    }
 }

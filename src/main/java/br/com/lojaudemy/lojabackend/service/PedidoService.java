@@ -53,13 +53,16 @@ public class PedidoService {
         }
     }
 
-    public Page<Pedido> buscarTodosPedidosPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    @SuppressWarnings("deprecation")
+	public Page<Pedido> buscarTodosPedidosPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return pedidoRepository.findAll(pageRequest);
     }
 
-   // public Pedido fromDTO (PedidoDTO pedDto) {
-    //    return new Pedido(pedDto.getIdPedido(), pedDto.getDataPedido());
-   // }
+    public Pedido fromDTO (PedidoDTO pedDto) {
+     Pedido teste = null;
+     return teste;
+//    	return new Pedido(pedDto.getIdPedido(), pedDto.getDataPedido());
+    }
     
 }

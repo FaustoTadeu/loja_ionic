@@ -53,13 +53,14 @@ public class CategoriaService {
         }
     }
 
-    public Page<Categoria> findAllPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    @SuppressWarnings("deprecation")
+	public Page<Categoria> buscarTodasCategoriasPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return categoriaRepository.findAll(pageRequest);
     }
 
-    public Categoria fromDTO (CategoriaDTO catDto) {
-        return new Categoria(catDto.getIdCategoria(), catDto.getNomeCategoria());
+    public Categoria fromDTO (CategoriaDTO catDto, Integer idCategoria) {
+        return new Categoria(idCategoria == null ? null : idCategoria, catDto.getNomeCategoria());
     }
     
 }
