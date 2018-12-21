@@ -1,9 +1,14 @@
 package br.com.lojaudemy.lojabackend.service;
 
+import br.com.lojaudemy.lojabackend.dto.PedidoDTO;
 import br.com.lojaudemy.lojabackend.model.Pedido;
 import br.com.lojaudemy.lojabackend.repository.PedidoRepository;
+import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,21 +20,46 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public Pedido buscarporId(Integer id) {
-        Optional<Pedido> obj = pedidoRepository.findById(id);
+    public Pedido buscarPedidoPorId(Integer idPed) {
+        Optional<Pedido> obj = pedidoRepository.findById(idPed);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! id: " + id + ", Tipo: " + Pedido.class.getName()
+                "Objeto não encontrado! id: " + idPed + ", Tipo: " + Pedido.class.getName()
         ));
     }
-    
-    public List<Pedido> buscarTodasCategorias() {
-    	List<Pedido> obj = null;
-    	try {
-    	   obj =  pedidoRepository.findAll();
+
+    public List<Pedido> buscarTodosPedidos() {
+        List<Pedido> obj = null;
+        try {
+            obj =  pedidoRepository.findAll();
         }catch (Exception e) {
-			new ObjectNotFoundException("Objetos do tipo " + Pedido.class.getName() + " não encontrados");
-		}
+            throw new ObjectNotFoundException("Objetos do tipo " + Pedido.class.getName() + " não encontrados");
+        }
         return obj;
     }
+
+    public Pedido inserirEditarPedido(Pedido ped) {
+        if (ped.getIdPedido() != null) {
+            buscarPedidoPorId(ped.getIdPedido());
+        }
+        return pedidoRepository.save(ped);
+    }
+
+    public void apagarPedido(Integer idPed) {
+        Pedido ped =  buscarPedidoPorId(idPed);
+        try{
+            pedidoRepository.delete(ped);
+        } catch (Exception e) {
+            throw new ConstraintViolationException("Não é possivel excluir pedidos que possuem produtos cadastrados");
+        }
+    }
+
+    public Page<Pedido> buscarTodosPedidosPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return pedidoRepository.findAll(pageRequest);
+    }
+
+   // public Pedido fromDTO (PedidoDTO pedDto) {
+    //    return new Pedido(pedDto.getIdPedido(), pedDto.getDataPedido());
+   // }
     
 }

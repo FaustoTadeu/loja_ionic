@@ -20,7 +20,7 @@ public class Cliente implements Serializable {
 	
 	private String nomeCliente;
 	
-	private String emailUsuarioCliente;
+	private String emailCliente;
 	
 	private String cpfCnpjCliente;
 	
@@ -45,7 +45,7 @@ public class Cliente implements Serializable {
 		super();
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
-		this.emailUsuarioCliente = emailUsuarioCliente;
+		this.emailCliente = emailUsuarioCliente;
 		this.cpfCnpjCliente = cpfCnpjCliente;
 		this.tipoCliente = tipoCliente.getCod();
 	}
@@ -66,12 +66,12 @@ public class Cliente implements Serializable {
 		this.nomeCliente = nomeCliente;
 	}
 
-	public String getEmailUsuarioCliente() {
-		return emailUsuarioCliente;
+	public String getEmailCliente() {
+		return emailCliente;
 	}
 
-	public void setEmailUsuarioCliente(String emailUsuarioCliente) {
-		this.emailUsuarioCliente = emailUsuarioCliente;
+	public void setEmailCliente(String emailUsuarioCliente) {
+		this.emailCliente = emailUsuarioCliente;
 	}
 
 	public String getCpfCnpjCliente() {

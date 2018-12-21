@@ -54,12 +54,11 @@ public class Categoria implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Categoria categoria = (Categoria) o;
-        return Objects.equals(idCategoria, categoria.idCategoria) &&
-                Objects.equals(nomeCategoria, categoria.nomeCategoria);
+        return Objects.equals(idCategoria, categoria.idCategoria);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCategoria, nomeCategoria);
+        return Objects.hash(idCategoria);
     }
 }

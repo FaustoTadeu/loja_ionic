@@ -1,10 +1,14 @@
 package br.com.lojaudemy.lojabackend.service;
 
+import br.com.lojaudemy.lojabackend.dto.CategoriaDTO;
 import br.com.lojaudemy.lojabackend.model.Categoria;
 import br.com.lojaudemy.lojabackend.repository.CategoriaRepository;
 import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +51,15 @@ public class CategoriaService {
         } catch (Exception e) {
             throw new ConstraintViolationException ("Não é possivel excluir categorias que possuem produtos cadastrados");
         }
+    }
+
+    public Page<Categoria> findAllPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return categoriaRepository.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO (CategoriaDTO catDto) {
+        return new Categoria(catDto.getIdCategoria(), catDto.getNomeCategoria());
     }
     
 }
