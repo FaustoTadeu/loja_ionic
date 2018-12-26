@@ -10,8 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.lojaudemy.lojabackend.dto.ClienteDTO;
+import br.com.lojaudemy.lojabackend.dto.ClienteNewDTO;
+import br.com.lojaudemy.lojabackend.enums.TipoCliente;
+import br.com.lojaudemy.lojabackend.model.Cidade;
 import br.com.lojaudemy.lojabackend.model.Cliente;
+import br.com.lojaudemy.lojabackend.model.Endereco;
+import br.com.lojaudemy.lojabackend.repository.CidadeRepository;
 import br.com.lojaudemy.lojabackend.repository.ClienteRepository;
+import br.com.lojaudemy.lojabackend.repository.EnderecoRepository;
 import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 
@@ -20,6 +26,12 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private CidadeRepository cidadeRepository;
+    
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public Cliente buscarClientePorId(Integer idCat) {
         Optional<Cliente> obj = clienteRepository.findById(idCat);
@@ -40,11 +52,13 @@ public class ClienteService {
 
     public Cliente inserirEditarCliente(Cliente cli) {
         if (cli.getIdCliente() != null) {
-            Cliente newCli = buscarClientePorId(cli.getIdCliente());
+            Cliente newCli = buscarClientePorId(cli.getIdCliente());	
             updateData(newCli, cli);
             return clienteRepository.save(newCli);
         } else {
-            return clienteRepository.save(cli);
+            cli = clienteRepository.save(cli);
+            enderecoRepository.saveAll(cli.getEndereco());
+            return cli;
         }
     }
 
@@ -53,7 +67,7 @@ public class ClienteService {
         try{
             clienteRepository.delete(cli);
         } catch (Exception e) {
-            throw new ConstraintViolationException("Não é possivel excluir clientes que possuem endereços cadastrados");
+            throw new ConstraintViolationException("Não é possivel excluir clientes que possuem pedidos cadastrados");
         }
     }
 
@@ -65,6 +79,22 @@ public class ClienteService {
 
     public Cliente fromDTO (ClienteDTO cliDto, Integer idCliente) {
     	return new Cliente (idCliente == null ? null : idCliente, cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null);
+    }
+    
+    public Cliente fromDTO (ClienteNewDTO cliNewDto, Integer idCliente) {
+    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()));
+    	Cidade cid = cidadeRepository.findById(cliNewDto.getCidadeId()).get();    
+    	Endereco end = new Endereco(null, cliNewDto.getLogradouroEndereco(), cliNewDto.getNumeroEndereco(), cliNewDto.getComplementoEndereco(), cliNewDto.getBairroEndereco(), cliNewDto.getCepEndereco(), cli, cid);
+    	cli.getEndereco().add(end);
+    	cli.getTelefones().add(cliNewDto.getTelefoneUm());
+    	if(cliNewDto.getTelefoneDois() != null) {
+    		cli.getTelefones().add(cliNewDto.getTelefoneDois());
+    	}
+    	if(cliNewDto.getTelefoneTres() != null) {
+    		cli.getTelefones().add(cliNewDto.getTelefoneTres());
+    	}
+    	
+    	return cli;
     }
     
     private void updateData(Cliente newCli, Cliente cli) {
