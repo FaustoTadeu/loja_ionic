@@ -20,6 +20,7 @@ public class Cliente implements Serializable {
 	
 	private String nomeCliente;
 	
+	@Column(unique=true)
 	private String emailCliente;
 	
 	private String cpfCnpjCliente;

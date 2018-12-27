@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import br.com.lojaudemy.lojabackend.service.exception.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,7 +19,6 @@ import br.com.lojaudemy.lojabackend.model.Endereco;
 import br.com.lojaudemy.lojabackend.repository.CidadeRepository;
 import br.com.lojaudemy.lojabackend.repository.ClienteRepository;
 import br.com.lojaudemy.lojabackend.repository.EnderecoRepository;
-import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 
 @Service
@@ -67,7 +67,7 @@ public class ClienteService {
         try{
             clienteRepository.delete(cli);
         } catch (Exception e) {
-            throw new ConstraintViolationException("Não é possivel excluir clientes que possuem pedidos cadastrados");
+            throw new DataIntegrityViolationException("Não é possivel excluir clientes que possuem pedidos cadastrados");
         }
     }
 

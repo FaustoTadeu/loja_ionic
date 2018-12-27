@@ -3,7 +3,7 @@ package br.com.lojaudemy.lojabackend.service;
 import br.com.lojaudemy.lojabackend.dto.CategoriaDTO;
 import br.com.lojaudemy.lojabackend.model.Categoria;
 import br.com.lojaudemy.lojabackend.repository.CategoriaRepository;
-import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
+import br.com.lojaudemy.lojabackend.service.exception.DataIntegrityViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,7 +49,7 @@ public class CategoriaService {
         try{
             categoriaRepository.delete(cat);
         } catch (Exception e) {
-            throw new ConstraintViolationException ("Não é possivel excluir categorias que possuem produtos cadastrados");
+            throw new DataIntegrityViolationException("Não é possivel excluir categorias que possuem produtos cadastrados");
         }
     }
 

@@ -1,6 +1,7 @@
 package br.com.lojaudemy.lojabackend.dto;
 
 import br.com.lojaudemy.lojabackend.model.Cliente;
+import br.com.lojaudemy.lojabackend.service.validation.ClienteUpdate;
 
 import java.io.Serializable;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@ClienteUpdate
 public class ClienteDTO  implements Serializable {
 
     private static final long serialVersionUID = 1L;
