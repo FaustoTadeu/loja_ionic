@@ -2,9 +2,11 @@ package br.com.lojaudemy.lojabackend.model;
 
 import javax.persistence.Entity;
 import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 
 @Entity(name = "pagamento_cartao")
+@JsonTypeName("pagamentoCartao")
 public class PagamentoCartao extends Pagamento {
 	
 	private static final long serialVersionUID = 1L;

@@ -36,7 +36,7 @@ public class PedidoController {
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insertPedido(@Valid @RequestBody Pedido obj) {
-        obj = pedidoService.inserirEditarPedido(obj);
+        obj = pedidoService.inserirPedido(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{idPedido}").buildAndExpand(obj.getIdPedido()).toUri();
         return ResponseEntity.created(uri).build();
