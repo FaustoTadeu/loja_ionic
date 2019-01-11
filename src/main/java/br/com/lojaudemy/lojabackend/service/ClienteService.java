@@ -8,6 +8,7 @@ import br.com.lojaudemy.lojabackend.service.exception.DataIntegrityViolationExce
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.lojaudemy.lojabackend.dto.ClienteDTO;
@@ -23,6 +24,9 @@ import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
+
+    @Autowired
+    private BCryptPasswordEncoder pe;
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -78,11 +82,11 @@ public class ClienteService {
     }
 
     public Cliente fromDTO (ClienteDTO cliDto, Integer idCliente) {
-    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null);
+    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null, null);
     }
     
     public Cliente fromDTO (ClienteNewDTO cliNewDto, Integer idCliente) {
-    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()));
+    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()), pe.encode(cliNewDto.getSenhaCliente()));
     	Cidade cid = cidadeRepository.findById(cliNewDto.getCidadeId()).get();    
     	Endereco end = new Endereco(null, cliNewDto.getLogradouroEndereco(), cliNewDto.getNumeroEndereco(), cliNewDto.getComplementoEndereco(), cliNewDto.getBairroEndereco(), cliNewDto.getCepEndereco(), cli, cid);
     	cli.getEndereco().add(end);
@@ -93,7 +97,6 @@ public class ClienteService {
     	if(cliNewDto.getTelefoneTres() != null) {
     		cli.getTelefones().add(cliNewDto.getTelefoneTres());
     	}
-    	
     	return cli;
     }
     

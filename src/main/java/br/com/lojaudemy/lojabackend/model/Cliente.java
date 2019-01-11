@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.*;
+
+import br.com.lojaudemy.lojabackend.enums.PerfilUsuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.com.lojaudemy.lojabackend.enums.TipoCliente;
 
@@ -27,6 +30,9 @@ public class Cliente implements Serializable {
 	
 	private Integer tipoCliente;
 
+	@JsonIgnore
+	private String senhaCliente;
+
 	@OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
 	private List<Endereco> endereco = new ArrayList<>();
 	
@@ -34,21 +40,28 @@ public class Cliente implements Serializable {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="PERFIL")
+	private Set<Integer> perfis = new HashSet<>();
+
 	@JsonIgnore
 	@OneToMany( mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {
+		setPerfil(PerfilUsuario.CLIENTE);
 	}
 
 	public Cliente(Integer idCliente, String nomeCliente, String emailUsuarioCliente, String cpfCnpjCliente,
-			TipoCliente tipoCliente) {
+			TipoCliente tipoCliente, String senhaCliente) {
 		super();
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
 		this.emailCliente = emailUsuarioCliente;
 		this.cpfCnpjCliente = cpfCnpjCliente;
-		this.tipoCliente = (tipoCliente != null) ? tipoCliente.getCod() : null;	
+		this.tipoCliente = (tipoCliente != null) ? tipoCliente.getCod() : null;
+		this.senhaCliente = senhaCliente;
+		setPerfil(PerfilUsuario.CLIENTE);
 	}
 
 	public Integer getIdCliente() {
@@ -90,7 +103,11 @@ public class Cliente implements Serializable {
 	public void setTipoCliente(TipoCliente tipoCliente) {
 		this.tipoCliente = tipoCliente.getCod();
 	}
-	
+
+	public String getSenhaCliente() { return senhaCliente; }
+
+	public void setSenhaCliente(String senhaCliente) { this.senhaCliente = senhaCliente; }
+
 	public List<Endereco> getEndereco() {
 		return endereco;
 	}
@@ -106,6 +123,10 @@ public class Cliente implements Serializable {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}
+
+	public Set<PerfilUsuario> getPerfis () { return perfis.stream().map(x -> PerfilUsuario.toEnum(x)).collect(Collectors.toSet()); }
+
+	public void setPerfil(PerfilUsuario perfil) { perfis.add(perfil.getCod()); }
 
 	public List<Pedido> getPedidos() { return pedidos; }
 

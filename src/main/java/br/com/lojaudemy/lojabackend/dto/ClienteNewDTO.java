@@ -25,7 +25,7 @@ public class ClienteNewDTO {
 	
 	private Integer tipoCliente;
 	
-	 @NotEmpty(message = "Preenchimento obrigatório")	
+	@NotEmpty(message = "Preenchimento obrigatório")
     private String logradouroEndereco;
 	
 	 @NotEmpty(message = "Preenchimento obrigatório")	
@@ -46,6 +46,9 @@ public class ClienteNewDTO {
 	private String telefoneTres;
 	
 	private Integer cidadeId;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String senhaCliente;
 	
 	public ClienteNewDTO () {
 		
@@ -155,4 +158,7 @@ public class ClienteNewDTO {
 		this.cidadeId = cidadeId;
 	}
 
+	public String getSenhaCliente() { return senhaCliente; }
+
+	public void setSenhaCliente(String senhaCliente) { this.senhaCliente = senhaCliente; }
 }
