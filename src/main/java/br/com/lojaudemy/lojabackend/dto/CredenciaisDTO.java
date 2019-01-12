@@ -6,27 +6,27 @@ public class CredenciaisDTO  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String nomeUsuario;
-    private String senhaUsuario;
+    private String emailCliente;
+    private String senhaCliente;
 
     public CredenciaisDTO() {
 
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public String getEmailCliente() {
+        return emailCliente;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setEmailCliente(String emailCliente) {
+        this.emailCliente = emailCliente;
     }
 
-    public String getSenhaUsuario() {
-        return senhaUsuario;
+    public String getSenhaCliente() {
+        return senhaCliente;
     }
 
-    public void setSenhaUsuario(String senhaUsuario) {
-        this.senhaUsuario = senhaUsuario;
+    public void setSenhaCliente(String senhaCliente) {
+        this.senhaCliente = senhaCliente;
     }
 }
 

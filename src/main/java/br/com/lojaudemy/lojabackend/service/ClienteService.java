@@ -37,10 +37,10 @@ public class ClienteService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    public Cliente buscarClientePorId(Integer idCat) {
-        Optional<Cliente> obj = clienteRepository.findById(idCat);
+    public Cliente buscarClientePorId(Integer idCli) {
+        Optional<Cliente> obj = clienteRepository.findById(idCli);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! id: " + idCat + ", Tipo: " + Cliente.class.getName()
+                "Objeto não encontrado! id: " + idCli + ", Tipo: " + Cliente.class.getName()
         ));
     }
 

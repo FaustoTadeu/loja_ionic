@@ -6,6 +6,7 @@ import br.com.lojaudemy.lojabackend.enums.TipoCliente;
 import br.com.lojaudemy.lojabackend.model.*;
 import br.com.lojaudemy.lojabackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class DBService  {
     @Autowired
     private BCryptPasswordEncoder pe;
 
-
+    @Bean
     public void instatiateTestDatabase() throws ParseException {
           //Insert Categoria e Produtos
         Categoria cat1 = new Categoria(null, "Informática");
@@ -84,11 +85,11 @@ public class DBService  {
         cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3, cid4, cid5));
 
     	//Insert Cliente, endereços e telefones
-    	Cliente cli1 = new Cliente(null, "Fausto Tadeu", "fausto.tna@hotmail.com", "123456789-11",  TipoCliente.PESSOAFISICA, pe.encode("123456"));
+    	Cliente cli1 = new Cliente(null, "Fausto Tadeu", "fausto.tna@hotmail.com", "123456789-11",  TipoCliente.PESSOAFISICA, pe.encode("teste"));
     	cli1.getTelefones().addAll(Arrays.asList("(31)3332-6763", "(31)99557-3544"));
     	cli1.setPerfil(PerfilUsuario.ADMIN);
 
-        Cliente cli2 = new Cliente(null, "Bianca Vilela", "bianca.vilela@hotmail.com", "987654321-77",  TipoCliente.PESSOAFISICA, pe.encode("123456"));
+        Cliente cli2 = new Cliente(null, "Bianca Vilela", "bianca.vilela@hotmail.com", "987654321-77",  TipoCliente.PESSOAFISICA, pe.encode("123"));
         cli2.getTelefones().addAll(Arrays.asList("(31)3332-5544", "(31)38176-9562"));
 
     	Endereco end1 = new Endereco(null, "R. Sebastião de Barros", "344", "Nova Granada", "Apto 101", "30431-325", cli1, cid1);

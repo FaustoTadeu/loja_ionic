@@ -1,29 +1,37 @@
 package br.com.lojaudemy.lojabackend.security;
 
+import java.util.Collection;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import br.com.lojaudemy.lojabackend.enums.PerfilUsuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UserSS implements UserDetails {
+    private static final long serialVersionUID = 1L;
 
-    private Integer idUser;
-    private String emailUser;
-    private String senhauser;
+    private Integer id;
+    private String email;
+    private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserSS() {
     }
 
-    public UserSS(Integer idUser, String emailUser, String senhauser, Set<PerfilUsuario> perfis) {
-        this.idUser = idUser;
-        this.emailUser = emailUser;
-        this.senhauser = senhauser;
-        this.authorities = perfis.stream().map(x-> new SimpleGrantedAuthority(x.getNome())).collect(Collectors.toList());
+    public UserSS(Integer id, String email, String senha, Set<PerfilUsuario> perfis) {
+        super();
+        this.id = id;
+        this.email = email;
+        this.senha = senha;
+        this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getNome())).collect(Collectors.toList());
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override
@@ -31,18 +39,14 @@ public class UserSS implements UserDetails {
         return authorities;
     }
 
-    public Integer getId() {
-        return idUser;
-    }
-
     @Override
     public String getPassword() {
-        return emailUser;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return  senhauser;
+        return email;
     }
 
     @Override
@@ -63,5 +67,9 @@ public class UserSS implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean hasRole(PerfilUsuario perfil) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getNome()));
     }
 }

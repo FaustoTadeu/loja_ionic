@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Profile;
 import java.text.ParseException;
 
 @Configuration
-@Profile("desenv")
-public class DesenvConfig {
+@Profile("dev")
+public class DevConfig {
 
     @Autowired
     private DBService dbService;
@@ -19,7 +19,7 @@ public class DesenvConfig {
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String strategy;
 
-    @Bean
+
     public boolean  instantiateDatabase() throws ParseException {
         if(!strategy.equals("create")) {
             return false;
