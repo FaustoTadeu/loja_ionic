@@ -3,6 +3,9 @@ package br.com.lojaudemy.lojabackend.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.lojaudemy.lojabackend.enums.PerfilUsuario;
+import br.com.lojaudemy.lojabackend.security.UserSS;
+import br.com.lojaudemy.lojabackend.service.exception.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.com.lojaudemy.lojabackend.service.exception.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -38,6 +41,12 @@ public class ClienteService {
     private EnderecoRepository enderecoRepository;
 
     public Cliente buscarClientePorId(Integer idCli) {
+
+        UserSS user = UserService.authenticated();
+        if(user == null || !user.hasRole(PerfilUsuario.ADMIN) && !idCli.equals(user.getId())){
+            throw new AuthorizationException("Acesso Negado!");
+        }
+
         Optional<Cliente> obj = clienteRepository.findById(idCli);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! id: " + idCli + ", Tipo: " + Cliente.class.getName()

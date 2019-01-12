@@ -6,6 +6,7 @@ import br.com.lojaudemy.lojabackend.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
@@ -35,6 +36,7 @@ public class CategoriaController {
         return ResponseEntity.ok().body(listCategoriasDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> InsertCategoria(@Valid @RequestBody CategoriaDTO catDto) {
@@ -45,6 +47,7 @@ public class CategoriaController {
          return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{idCategoria}", method = RequestMethod.PUT)
     public ResponseEntity<Void> EditCategoria(@Valid @RequestBody CategoriaDTO catDto, @PathVariable Integer idCategoria) {
@@ -55,6 +58,7 @@ public class CategoriaController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Categoria> deleteCategoriaById(@PathVariable Integer id) {

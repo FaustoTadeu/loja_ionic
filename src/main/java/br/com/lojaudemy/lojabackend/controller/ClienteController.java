@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class ClienteController {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ClienteDTO>> findAllClientes() {
@@ -64,6 +66,7 @@ public class ClienteController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{idCliente}", method = RequestMethod.DELETE)
     public ResponseEntity<Cliente> deleteClienteById(@PathVariable Integer idCliente) {
@@ -71,6 +74,7 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public ResponseEntity<Page<ClienteDTO>> findAllClientesPage(

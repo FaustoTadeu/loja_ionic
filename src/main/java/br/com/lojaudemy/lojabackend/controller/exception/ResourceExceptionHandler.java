@@ -1,5 +1,6 @@
 package br.com.lojaudemy.lojabackend.controller.exception;
 
+import br.com.lojaudemy.lojabackend.service.exception.AuthorizationException;
 import br.com.lojaudemy.lojabackend.service.exception.ConstraintViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.DataIntegrityViolationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
@@ -41,6 +42,12 @@ public class ResourceExceptionHandler {
             error.addErros(er.getField(), er.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorizationException(AuthorizationException e, HttpServletRequest request) {
+        StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
 }

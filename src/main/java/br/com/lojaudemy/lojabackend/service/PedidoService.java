@@ -3,6 +3,8 @@ package br.com.lojaudemy.lojabackend.service;
 import br.com.lojaudemy.lojabackend.enums.EstadoPagamento;
 import br.com.lojaudemy.lojabackend.model.*;
 import br.com.lojaudemy.lojabackend.repository.*;
+import br.com.lojaudemy.lojabackend.security.UserSS;
+import br.com.lojaudemy.lojabackend.service.exception.AuthorizationException;
 import br.com.lojaudemy.lojabackend.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,9 +34,9 @@ public class PedidoService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
-//
+
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
 //    @Autowired
 //    private EmailService emailService;
@@ -72,12 +74,12 @@ public class PedidoService {
     }
 
     public Page<Pedido> buscarTodosPedidosPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-     //   UserSS user = UserService.authenticated();
-    //    if (user == null) {
-    //        throw new AuthorizationException("Acesso negado");
-   //     }
-        PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        Cliente cliente =  clienteRepository.findById(1).get();
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente =  clienteService.buscarClientePorId(user.getId());
         return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 

@@ -8,6 +8,7 @@ import br.com.lojaudemy.lojabackend.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,6 +39,7 @@ public class ProdutoController {
         return ResponseEntity.ok().body(listProdutosDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> InsertProduto(@Valid @RequestBody ProdutoDTO prodDto) {
@@ -48,6 +50,7 @@ public class ProdutoController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{idProduto}", method = RequestMethod.PUT)
     public ResponseEntity<Void> EditProduto(@Valid @RequestBody ProdutoDTO prodDto, @PathVariable Integer idProduto) {
@@ -59,6 +62,7 @@ public class ProdutoController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value ="/{idProduto}", method = RequestMethod.DELETE)
     public ResponseEntity<Cliente> deleteProdutoById(@PathVariable Integer idProduto) {
