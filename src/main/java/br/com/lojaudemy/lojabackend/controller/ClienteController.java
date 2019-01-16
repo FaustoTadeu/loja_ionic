@@ -46,6 +46,15 @@ public class ClienteController {
         return ResponseEntity.ok().body(listClientesDto);
     }
 
+    @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:8100")
+    @RequestMapping(value = "/email", method = RequestMethod.GET)
+    public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value")String email) {
+        Cliente obj = clienteService.buscarClientePorEmail(email);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> InsertCliente(@Valid @RequestBody ClienteNewDTO cliNewDto) {
