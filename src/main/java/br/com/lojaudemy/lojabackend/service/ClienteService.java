@@ -103,11 +103,11 @@ public class ClienteService {
     }
 
     public Cliente fromDTO (ClienteDTO cliDto, Integer idCliente) {
-    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null, null);
+    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getFotoCliente() == null ? null : cliDto.getFotoCliente(), cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null, null);
     }
     
     public Cliente fromDTO (ClienteNewDTO cliNewDto, Integer idCliente) {
-    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()), pe.encode(cliNewDto.getSenhaCliente()));
+    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getFotoCliente() == null ? null : cliNewDto.getFotoCliente(), cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()), pe.encode(cliNewDto.getSenhaCliente()));
     	Cidade cid = cidadeRepository.findById(cliNewDto.getCidadeId()).get();    
     	Endereco end = new Endereco(null, cliNewDto.getLogradouroEndereco(), cliNewDto.getNumeroEndereco(), cliNewDto.getComplementoEndereco(), cliNewDto.getBairroEndereco(), cliNewDto.getCepEndereco(), cli, cid);
     	cli.getEndereco().add(end);

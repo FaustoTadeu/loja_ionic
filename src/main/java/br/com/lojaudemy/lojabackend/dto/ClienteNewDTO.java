@@ -6,6 +6,8 @@ import javax.validation.constraints.Size;
 
 import br.com.lojaudemy.lojabackend.service.validation.ClienteInsert;
 
+import java.sql.Blob;
+
 
 @ClienteInsert
 public class ClienteNewDTO {
@@ -15,6 +17,8 @@ public class ClienteNewDTO {
     @NotEmpty (message = "Preenchimento obrigatório")
     @Size (min=3, message = "O nome do cliente deve ter mais que 3 caracteres")
     private String nomeCliente;
+
+    private Blob fotoCliente;
 	
     @NotEmpty(message = "Preenchimento obrigatório")	
     @Email (message = "Email inválido")
@@ -61,6 +65,10 @@ public class ClienteNewDTO {
 	public void setNomeCliente(String nomeCliente) {
 		this.nomeCliente = nomeCliente;
 	}
+
+	public Blob getFotoCliente() { return fotoCliente; }
+
+	public void setFotoCliente(Blob fotoCliente) { this.fotoCliente = fotoCliente; }
 
 	public String getEmailCliente() {
 		return emailCliente;

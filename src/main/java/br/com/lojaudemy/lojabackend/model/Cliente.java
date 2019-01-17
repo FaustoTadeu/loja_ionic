@@ -1,6 +1,7 @@
 package br.com.lojaudemy.lojabackend.model;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,8 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCliente;
 	
+	private Blob fotoCliente;
+
 	private String nomeCliente;
 	
 	@Column(unique=true)
@@ -52,10 +55,11 @@ public class Cliente implements Serializable {
 		setPerfil(PerfilUsuario.CLIENTE);
 	}
 
-	public Cliente(Integer idCliente, String nomeCliente, String emailCliente, String cpfCnpjCliente,
+	public Cliente(Integer idCliente, Blob fotoCliente, String nomeCliente, String emailCliente, String cpfCnpjCliente,
 			TipoCliente tipoCliente, String senhaCliente) {
 		super();
 		this.idCliente = idCliente;
+		this.fotoCliente = fotoCliente;
 		this.nomeCliente = nomeCliente;
 		this.emailCliente = emailCliente;
 		this.cpfCnpjCliente = cpfCnpjCliente;
@@ -71,6 +75,10 @@ public class Cliente implements Serializable {
 	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
 	}
+
+	public Blob getFotoCliente() { return fotoCliente; }
+
+	public void setFotoCliente(Blob fotoCliente) { this.fotoCliente = fotoCliente; }
 
 	public String getNomeCliente() {
 		return nomeCliente;

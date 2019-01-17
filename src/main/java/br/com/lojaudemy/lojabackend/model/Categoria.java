@@ -2,6 +2,7 @@ package br.com.lojaudemy.lojabackend.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,16 +18,20 @@ public class Categoria implements Serializable {
 
     private String nomeCategoria;
 
+    @Lob
+    private byte[] imagemCategoria;
+
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 
     public Categoria() {
     }
 
-    public Categoria(Integer idCategoria, String nomeCategoria) {
+    public Categoria(Integer idCategoria, String nomeCategoria, byte[] imagemCategoria) {
         super();
         this.idCategoria = idCategoria;
         this.nomeCategoria = nomeCategoria;
+        this.imagemCategoria = imagemCategoria;
     }
 
     public Integer getIdCategoria() {
@@ -48,6 +53,10 @@ public class Categoria implements Serializable {
     public List<Produto> getProdutos() { return produtos; }
 
     public void setProdutos(List<Produto> produtos) { this.produtos = produtos; }
+
+    public byte[] getImagemCategoria() { return imagemCategoria; }
+
+    public void setImagemCategoria(byte[] imagemCategoria) { this.imagemCategoria = imagemCategoria; }
 
     @Override
     public boolean equals(Object o) {

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class CategoriaService {
     public List<Categoria> buscarTodasCategorias() {
     	List<Categoria> obj = null;
     	try {
-    	   obj =  categoriaRepository.findAll();
+        	   obj =  categoriaRepository.findAll();
         }catch (Exception e) {
 			new ObjectNotFoundException("Objetos do tipo " + Categoria.class.getName() + " não encontrados");
 		}
@@ -60,7 +61,7 @@ public class CategoriaService {
     }
 
     public Categoria fromDTO (CategoriaDTO catDto, Integer idCategoria) {
-        return new Categoria(idCategoria == null ? null : idCategoria, catDto.getNomeCategoria());
+        return new Categoria(idCategoria == null ? null : idCategoria, catDto.getNomeCategoria(), catDto.getImagemCategoria() == null ? null : catDto.getImagemCategoria());
     }
     
 }

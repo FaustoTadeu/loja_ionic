@@ -2,10 +2,12 @@ package br.com.lojaudemy.lojabackend.dto;
 
 import br.com.lojaudemy.lojabackend.model.Categoria;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.sql.Blob;
 
 public class CategoriaDTO implements Serializable {
 
@@ -19,12 +21,16 @@ public class CategoriaDTO implements Serializable {
     @Size(min=3, message="O tamanho deve ser pelo menos 3 caracteres!")
     private String nomeCategoria;
 
+    @Lob
+    private byte[] imagemCategoria;
+
     public CategoriaDTO() {
     }
 
     public CategoriaDTO(Categoria cat)  {
         idCategoria = cat.getIdCategoria();
         nomeCategoria = cat.getNomeCategoria();
+        imagemCategoria = cat.getImagemCategoria();
     }
 
     public Integer getIdCategoria() {
@@ -43,4 +49,7 @@ public class CategoriaDTO implements Serializable {
         this.nomeCategoria = nomeCategoria;
     }
 
+    public byte[] getImagemCategoria() { return imagemCategoria; }
+
+    public void setImagemCategoria(byte[] imagemCategoria) { this.imagemCategoria = imagemCategoria; }
 }

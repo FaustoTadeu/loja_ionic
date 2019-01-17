@@ -30,6 +30,10 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "produto")
+    private List<ImagemProd> imagens = new ArrayList<>();
+
     public Produto() {
     }
 
@@ -87,6 +91,10 @@ public class Produto implements Serializable {
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
     }
+
+    public List<ImagemProd> getImagens() { return imagens; }
+
+    public void setImagens(List<ImagemProd> imagens) { this.imagens = imagens; }
 
     @Override
     public boolean equals(Object o) {
