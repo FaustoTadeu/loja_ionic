@@ -17,7 +17,7 @@ public class ClienteDTO  implements Serializable {
 
     private Integer idCliente;
 
-    private Blob fotoCliente;
+    private String fotoCliente;
 ;
     @NotEmpty (message = "Preenchimento obrigatório")
     @Size (min=3, message = "O nome do cliente deve ter mais que 3 caracteres")
@@ -33,7 +33,7 @@ public class ClienteDTO  implements Serializable {
         this.idCliente = cliente.getIdCliente();
         this.nomeCliente = cliente.getNomeCliente();
         this.emailCliente = cliente.getEmailCliente();
-        this.fotoCliente = cliente.getFotoCliente();
+        this.fotoCliente = new String(cliente.getFotoCliente());
     }
 
     public Integer getIdCliente() {
@@ -44,9 +44,9 @@ public class ClienteDTO  implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public Blob getFotoCliente() { return fotoCliente; }
+    public String getFotoCliente() { return fotoCliente; }
 
-    public void setFotoCliente(Blob fotoCliente) { this.fotoCliente = fotoCliente; }
+    public void setFotoCliente(String fotoCliente) { this.fotoCliente = fotoCliente; }
 
     public String getNomeCliente() {
         return nomeCliente;

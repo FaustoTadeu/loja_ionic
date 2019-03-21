@@ -63,16 +63,17 @@ public class ClienteService {
         return obj;
     }
 
-    public Cliente buscarClientePorEmail (String email) {
+    public ClienteDTO buscarClientePorEmail (String email) {
         UserSS user = UserService.authenticated();
         if(user == null || !user.hasRole(PerfilUsuario.ADMIN) && !email.equals(user.getUsername())) {
             throw new AuthorizationException("Acesso negado");
         }
         Cliente cliente = clienteRepository.findByEmailCliente(email);
+        ClienteDTO clienteDto = new ClienteDTO(cliente);
         if(cliente == null) {
             throw  new ObjectNotFoundException("Objeto não encontrado! Email: " + email + " Tipo: " + Cliente.class);
         }
-        return cliente;
+        return clienteDto;
     }
 
     public Cliente inserirEditarCliente(Cliente cli) {
@@ -103,11 +104,11 @@ public class ClienteService {
     }
 
     public Cliente fromDTO (ClienteDTO cliDto, Integer idCliente) {
-    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getFotoCliente() == null ? null : cliDto.getFotoCliente(), cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null, null);
+    	return new Cliente (idCliente == null ? null : idCliente, cliDto.getFotoCliente() == null ? null : cliDto.getFotoCliente().getBytes(), cliDto.getNomeCliente(), cliDto.getEmailCliente(), null, null, null);
     }
-    
+
     public Cliente fromDTO (ClienteNewDTO cliNewDto, Integer idCliente) {
-    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getFotoCliente() == null ? null : cliNewDto.getFotoCliente(), cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()), pe.encode(cliNewDto.getSenhaCliente()));
+    	Cliente cli = new Cliente (idCliente == null ? null : idCliente, cliNewDto.getFotoCliente() == null ? null : cliNewDto.getFotoCliente().getBytes(), cliNewDto.getNomeCliente(), cliNewDto.getEmailCliente(), cliNewDto.getCpfCnpjCliente(), TipoCliente.toEnum(cliNewDto.getTipoCliente()), pe.encode(cliNewDto.getSenhaCliente()));
     	Cidade cid = cidadeRepository.findById(cliNewDto.getCidadeId()).get();    
     	Endereco end = new Endereco(null, cliNewDto.getLogradouroEndereco(), cliNewDto.getNumeroEndereco(), cliNewDto.getComplementoEndereco(), cliNewDto.getBairroEndereco(), cliNewDto.getCepEndereco(), cli, cid);
     	cli.getEndereco().add(end);

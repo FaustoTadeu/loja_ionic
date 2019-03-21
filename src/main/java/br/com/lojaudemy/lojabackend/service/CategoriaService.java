@@ -61,7 +61,7 @@ public class CategoriaService {
     }
 
     public Categoria fromDTO (CategoriaDTO catDto, Integer idCategoria) {
-        return new Categoria(idCategoria == null ? null : idCategoria, catDto.getNomeCategoria(), catDto.getImagemCategoria() == null ? null : catDto.getImagemCategoria());
+        return new Categoria(idCategoria == null ? null : idCategoria, catDto.getNomeCategoria(), catDto.getImagemCategoria() == null ? null : catDto.getImagemCategoria().getBytes());
     }
     
 }

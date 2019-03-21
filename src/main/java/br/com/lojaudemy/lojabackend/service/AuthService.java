@@ -20,7 +20,7 @@ public class AuthService {
 
     private Random rand = new Random();
 
-    public void setNewPassword(String email) {
+    public String setNewPassword(String email) {
         Cliente cliente = clienteRepository.findByEmailCliente(email);
         if(cliente == null) {
             throw new ObjectNotFoundException("Email não encontrado");
@@ -30,6 +30,7 @@ public class AuthService {
         cliente.setSenhaCliente(pe.encode(newPassword));
         clienteRepository.save(cliente);
 
+        return newPassword;
     }
 
     private String newPassword() {

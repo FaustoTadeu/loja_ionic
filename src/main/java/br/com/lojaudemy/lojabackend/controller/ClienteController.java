@@ -47,11 +47,9 @@ public class ClienteController {
     }
 
     @Transactional
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value = "/email", method = RequestMethod.GET)
-    public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value")String email) {
-        Cliente obj = clienteService.buscarClientePorEmail(email);
+    public ResponseEntity<ClienteDTO> findByEmail(@RequestParam(value = "value")String email) {
+        ClienteDTO obj = clienteService.buscarClientePorEmail(email);
         return ResponseEntity.ok().body(obj);
     }
 

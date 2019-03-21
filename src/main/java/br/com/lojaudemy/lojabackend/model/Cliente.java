@@ -21,8 +21,9 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCliente;
-	
-	private Blob fotoCliente;
+
+	@Lob
+	private byte[] fotoCliente;
 
 	private String nomeCliente;
 	
@@ -55,7 +56,7 @@ public class Cliente implements Serializable {
 		setPerfil(PerfilUsuario.CLIENTE);
 	}
 
-	public Cliente(Integer idCliente, Blob fotoCliente, String nomeCliente, String emailCliente, String cpfCnpjCliente,
+	public Cliente(Integer idCliente, byte[] fotoCliente, String nomeCliente, String emailCliente, String cpfCnpjCliente,
 			TipoCliente tipoCliente, String senhaCliente) {
 		super();
 		this.idCliente = idCliente;
@@ -76,9 +77,9 @@ public class Cliente implements Serializable {
 		this.idCliente = idCliente;
 	}
 
-	public Blob getFotoCliente() { return fotoCliente; }
+	public byte[] getFotoCliente() { return fotoCliente; }
 
-	public void setFotoCliente(Blob fotoCliente) { this.fotoCliente = fotoCliente; }
+	public void setFotoCliente(byte[] fotoCliente) { this.fotoCliente = fotoCliente; }
 
 	public String getNomeCliente() {
 		return nomeCliente;

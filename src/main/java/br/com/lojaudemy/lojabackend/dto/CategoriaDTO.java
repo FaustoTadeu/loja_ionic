@@ -22,7 +22,7 @@ public class CategoriaDTO implements Serializable {
     private String nomeCategoria;
 
     @Lob
-    private byte[] imagemCategoria;
+    private String imagemCategoria;
 
     public CategoriaDTO() {
     }
@@ -30,7 +30,7 @@ public class CategoriaDTO implements Serializable {
     public CategoriaDTO(Categoria cat)  {
         idCategoria = cat.getIdCategoria();
         nomeCategoria = cat.getNomeCategoria();
-        imagemCategoria = cat.getImagemCategoria();
+        imagemCategoria = new String(cat.getImagemCategoria());
     }
 
     public Integer getIdCategoria() {
@@ -49,7 +49,7 @@ public class CategoriaDTO implements Serializable {
         this.nomeCategoria = nomeCategoria;
     }
 
-    public byte[] getImagemCategoria() { return imagemCategoria; }
+    public String getImagemCategoria() { return imagemCategoria; }
 
-    public void setImagemCategoria(byte[] imagemCategoria) { this.imagemCategoria = imagemCategoria; }
+    public void setImagemCategoria(String imagemCategoria) { this.imagemCategoria = imagemCategoria; }
 }

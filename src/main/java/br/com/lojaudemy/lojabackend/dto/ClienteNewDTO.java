@@ -18,7 +18,7 @@ public class ClienteNewDTO {
     @Size (min=3, message = "O nome do cliente deve ter mais que 3 caracteres")
     private String nomeCliente;
 
-    private Blob fotoCliente;
+    private String fotoCliente;
 	
     @NotEmpty(message = "Preenchimento obrigatório")	
     @Email (message = "Email inválido")
@@ -66,9 +66,9 @@ public class ClienteNewDTO {
 		this.nomeCliente = nomeCliente;
 	}
 
-	public Blob getFotoCliente() { return fotoCliente; }
+	public String getFotoCliente() { return fotoCliente; }
 
-	public void setFotoCliente(Blob fotoCliente) { this.fotoCliente = fotoCliente; }
+	public void setFotoCliente(String fotoCliente) { this.fotoCliente = fotoCliente; }
 
 	public String getEmailCliente() {
 		return emailCliente;

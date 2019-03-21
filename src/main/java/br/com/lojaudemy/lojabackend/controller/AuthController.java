@@ -35,10 +35,11 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+
     @RequestMapping(value = "/esqueci_senha", method = RequestMethod.POST)
-    public ResponseEntity<Void> forgotPassword (@Valid @RequestBody EmailDTO emailDTO) {
-        authService.setNewPassword(emailDTO.getEmail());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity <String> forgotPassword (@Valid @RequestBody EmailDTO emailDTO) {
+        String newPassWord = authService.setNewPassword(emailDTO.getEmail());
+        return ResponseEntity.ok().body("{ 'newPassword': " + newPassWord + " }");
     }
 
 }
