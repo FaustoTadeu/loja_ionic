@@ -1,23 +1,15 @@
 package br.com.lojaudemy.lojabackend.controller;
 
-import br.com.lojaudemy.lojabackend.dto.CategoriaDTO;
 import br.com.lojaudemy.lojabackend.dto.CidadeDTO;
 import br.com.lojaudemy.lojabackend.dto.EstadoDTO;
-import br.com.lojaudemy.lojabackend.model.Categoria;
 import br.com.lojaudemy.lojabackend.model.Cidade;
 import br.com.lojaudemy.lojabackend.model.Estado;
-import br.com.lojaudemy.lojabackend.service.CategoriaService;
 import br.com.lojaudemy.lojabackend.service.CidadeService;
 import br.com.lojaudemy.lojabackend.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +36,7 @@ public class EstadoController {
         List<Cidade> listCidades = cidadeService.buscarCidadesPorEstado(idEstado);
         List <CidadeDTO> listCidadesDto = listCidades.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listCidadesDto);
-    }
+        }
 
     @CrossOrigin(origins = "http://localhost:8100")
     @RequestMapping(value = "/page", method = RequestMethod.GET)

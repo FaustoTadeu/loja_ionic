@@ -15,7 +15,7 @@ public class ClienteNewDTO {
     private static final long serialVersionUID = 1L;
     
     @NotEmpty (message = "Preenchimento obrigatório")
-    @Size (min=3, message = "O nome do cliente deve ter mais que 3 caracteres")
+    @Size (min=5, max=120,  message = "O nome do cliente deve ter entre 5 e 120 caracteres")
     private String nomeCliente;
 
     private String fotoCliente;
